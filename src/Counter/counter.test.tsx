@@ -24,7 +24,6 @@ describe("カウンターコンポーネントのテスト", () => {
     test("カウントが1の状態でボタンを押下したら1カウントされて2を返す", () => {
       // 準備
       const Root = render(<Counter title="test" />);
-      // const Button = Root.getByTestId("counter-button");
       const Button = Root.getByRole("button", { name: "add count" });
       const Result = Root.getByTestId("counter-result");
       // 実行
