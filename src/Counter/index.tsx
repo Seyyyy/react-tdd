@@ -20,9 +20,7 @@ const Counter = (props: Props) => {
     <div className={styles.root}>
       <title>{props.title}</title>
       <p data-testid="counter-result">{count}</p>
-      <button data-testid="counter-button" onClick={onClick}>
-        add count
-      </button>
+      <button onClick={onClick}>add count</button>
     </div>
   );
 };
