@@ -1,0 +1,6 @@
+.root {
+  padding-block: 1rem;
+  padding-inline: 16px;
+  border: 1px solid #333;
+  border-radius: 0.75rem;
+}
