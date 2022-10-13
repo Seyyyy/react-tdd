@@ -1,13 +1,21 @@
-import React, { useState } from "react";
-import { useDrag, useDrop, DndProvider } from "react-dnd";
+import React from "react";
+import { DndProvider } from "react-dnd";
+import { Item } from "./constants";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import styles from "./kanban.module.css";
 import { Container } from "./container";
+// import { ItemInput } from "./itemInput";
 
-export const Root = () => {
+export type BoardProps = {
+  initialItemList?: Item[];
+};
+
+export const Board: React.FC<BoardProps> = ({ initialItemList }) => {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Container />
-    </DndProvider>
+    <>
+      {/* <ItemInput /> */}
+      <DndProvider backend={HTML5Backend}>
+        <Container initialItemList={initialItemList} />
+      </DndProvider>
+    </>
   );
 };

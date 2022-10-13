@@ -1,13 +1,17 @@
-import React, { useRef, useState, useCallback } from "react";
-import { useDrag, useDrop, DndProvider } from "react-dnd";
-import type { Identifier, XYCoord } from "dnd-core";
-import { ItemTypes, Item, itemList, DragItem } from "./constants";
+import React, { useCallback } from "react";
+import { Item } from "./constants";
 import { Group } from "./group";
 import { useList } from "./useList";
 
-export const Container = () => {
+export type ContainerProps = {
+  initialItemList?: Item[];
+};
+
+export const Container: React.FC<ContainerProps> = ({
+  initialItemList = [],
+}) => {
   //   const [cards, setCards] = useState(itemList);
-  const [groupedCards, cards, setCards] = useList(itemList);
+  const [groupedCards, cards, setCards] = useList(initialItemList);
 
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {

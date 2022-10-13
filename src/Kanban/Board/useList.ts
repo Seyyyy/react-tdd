@@ -5,8 +5,6 @@ export const generateGroupedList = (
   GroupType: string[],
   item: Item[]
 ): GroupItem => {
-  console.log(GroupType);
-  console.log(item);
   let groupedList: GroupItem = {};
   GroupType.map((group) => {
     groupedList[group] = item.filter((item) => item.group === group);

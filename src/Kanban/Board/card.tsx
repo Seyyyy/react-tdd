@@ -1,7 +1,7 @@
-import React, { useRef, useState, useCallback } from "react";
-import { useDrag, useDrop, DndProvider } from "react-dnd";
+import React, { useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from "dnd-core";
-import { ItemTypes, Item, itemList, DragItem } from "./constants";
+import { ItemTypes, Item, DragItem } from "./constants";
 
 const style = {
   border: "1px dashed gray",
@@ -73,7 +73,12 @@ export const Card: React.FC<CardProps> = ({ item, index, moveCard }) => {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
   return (
-    <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
+    <div
+      ref={ref}
+      style={{ ...style, opacity }}
+      data-handler-id={handlerId}
+      data-testid={`card-${item.id}`}
+    >
       {item.text}
     </div>
   );

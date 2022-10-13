@@ -1,7 +1,6 @@
-import React, { useRef, useState, useCallback } from "react";
-import { useDrag, useDrop, DndProvider } from "react-dnd";
-import type { Identifier, XYCoord } from "dnd-core";
-import { ItemTypes, Item, itemList, DragItem } from "./constants";
+import React, { useCallback } from "react";
+import { useDrop } from "react-dnd";
+import { ItemTypes, Item } from "./constants";
 import { Card } from "./card";
 
 const style = {
@@ -32,8 +31,6 @@ export const Group: React.FC<GroupProps> = ({
     hover(dragItem: Item) {
       if (groupType === dragItem.group) return;
       moveGroup(dragItem, groupType);
-      console.log(dragItem);
-      console.log(groupType);
     },
   });
 
@@ -43,7 +40,7 @@ export const Group: React.FC<GroupProps> = ({
 
   return (
     <>
-      <div ref={ref} style={style}>
+      <div ref={ref} style={style} data-testid={`group-${groupType}`}>
         {cards.map((card, i) => renderCard(card, i))}
       </div>
     </>
