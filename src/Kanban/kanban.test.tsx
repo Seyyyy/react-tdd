@@ -5,6 +5,7 @@ import { Board } from "./Board";
 /*
 カンバンアプリ
 Todo, In Progress, Doneの3状態があり、それぞれの状態に変更ができる。
+  N個の状態があり、それぞれの状態に変更ができる
 それぞれの状態につきタスクリストをもつ。
 タスクリストは下方向に積み重なっていくように追加される。
 タスクにはタイトル、説明、タスクの状態の状態を持つ。// 型情報を見ればわかる
@@ -29,16 +30,16 @@ const itemList = [
 describe("カンバンアプリのテスト", () => {
   // test("Todo, In Progress, Doneの3状態に変更できる", () => {});
   test("タスクの配列は最後の要素の次に追加される", () => {
-    const Root = render(<Board initialItemList={itemList} />);
+    const Root = render(
+      <Board initialItemList={itemList} groupType={["todo", "progress"]} />
+    );
     const GroupTodo = Root.getByTestId("group-todo");
     const Card = Root.getByTestId("card-root");
     dragAndDrop(Card, GroupTodo);
-    // Root.debug();
-    // expect(result).toEqual();
   });
 
   test("タスクを配列に追加できる", () => {
-    const Root = render(<Board />);
+    const Root = render(<Board groupType={["todo", "progress"]} />);
     const TitleInput = Root.getByRole("textbox", { name: "title-input" });
     const DescriptionInput = Root.getByRole("textbox", {
       name: "description-input",
@@ -63,7 +64,9 @@ describe("カンバンアプリのテスト", () => {
   });
 
   test("タスクを配列から削除できる", () => {
-    const Root = render(<Board initialItemList={itemList} />);
+    const Root = render(
+      <Board initialItemList={itemList} groupType={["todo", "progress"]} />
+    );
     const DeleteButton = Root.getByTestId("card-delete");
 
     fireEvent.click(DeleteButton);
@@ -72,14 +75,24 @@ describe("カンバンアプリのテスト", () => {
     expect(Card).toBeFalsy();
   });
 
-  test("タスクの内容を変更できる(Todo progress done)", () => {
-    const Root = render(<Board initialItemList={itemList} />);
-    const GroupTodo = Root.getByTestId("group-todo");
+  test("タスクの内容を変更できる(N個の状態)", () => {
+    const itemList = [
+      {
+        id: 1,
+        title: "title",
+        description: "test",
+        group: "todo",
+      },
+    ];
+    const Root = render(
+      <Board initialItemList={itemList} groupType={["todo", "test"]} />
+    );
+    const GroupTodo = Root.getByTestId("group-test");
     const Card = Root.getByTestId("card-root");
     dragAndDrop(Card, GroupTodo);
 
     const result = Root.getByTestId("card-root").childNodes[2].textContent;
-    expect(result).toBe("todo");
+    expect(result).toBe("test");
   });
 });
 

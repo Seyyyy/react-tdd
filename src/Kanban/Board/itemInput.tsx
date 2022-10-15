@@ -6,12 +6,14 @@ type ItemInputProps = {
   formValue: InputItem;
   setFormValue: React.Dispatch<InputItem>;
   setItem: React.Dispatch<React.SetStateAction<Item[]>>;
+  groupType: string[];
 };
 
 export const ItemInput: React.FC<ItemInputProps> = ({
   formValue,
   setFormValue,
   setItem,
+  groupType,
 }) => {
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue({
@@ -75,9 +77,11 @@ export const ItemInput: React.FC<ItemInputProps> = ({
           onChange={handleChangeState}
           aria-label="state-input"
         >
-          <option value="todo">todo</option>
-          <option value="progress">progress</option>
-          <option value="done">done</option>
+          {groupType.map((group) => (
+            <option key={group} value={group}>
+              {group}
+            </option>
+          ))}
         </select>
       </div>
       <div>

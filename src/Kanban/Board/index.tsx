@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { DndProvider } from "react-dnd";
-import { Item, GroupType } from "./constants";
+import { Item } from "./constants";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Container } from "./container";
 import { ItemInput } from "./itemInput";
@@ -8,9 +8,13 @@ import { useList, generateGroupedList } from "./useList";
 
 export type BoardProps = {
   initialItemList?: Item[];
+  groupType: string[];
 };
 
-export const Board: React.FC<BoardProps> = ({ initialItemList = [] }) => {
+export const Board: React.FC<BoardProps> = ({
+  initialItemList = [],
+  groupType,
+}) => {
   const [item, setItem] = useList(initialItemList);
 
   const [formValue, setFormValue] = useState({
@@ -24,7 +28,7 @@ export const Board: React.FC<BoardProps> = ({ initialItemList = [] }) => {
       <>
         <DndProvider backend={HTML5Backend}>
           <Container
-            groupedItem={generateGroupedList(GroupType, item)}
+            groupedItem={generateGroupedList(groupType, item)}
             item={item}
             setCards={setItem}
           />
@@ -40,6 +44,7 @@ export const Board: React.FC<BoardProps> = ({ initialItemList = [] }) => {
         formValue={formValue}
         setFormValue={setFormValue}
         setItem={setItem}
+        groupType={groupType}
       />
       {Kanban}
     </>
