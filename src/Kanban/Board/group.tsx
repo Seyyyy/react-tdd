@@ -29,7 +29,6 @@ export const Group: React.FC<GroupProps> = ({
   const [, ref] = useDrop({
     accept: ItemTypes.CARD,
     hover(dragItem: Item) {
-      if (groupType === dragItem.group) return;
       moveGroup(dragItem, groupType);
     },
   });
