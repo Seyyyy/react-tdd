@@ -15,9 +15,15 @@ interface CardProps {
   item: Item;
   index: number;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
+  deleteCard: (item: Item) => void;
 }
 
-export const Card: React.FC<CardProps> = ({ item, index, moveCard }) => {
+export const Card: React.FC<CardProps> = ({
+  item,
+  index,
+  moveCard,
+  deleteCard,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
     DragItem,
@@ -77,9 +83,14 @@ export const Card: React.FC<CardProps> = ({ item, index, moveCard }) => {
       ref={ref}
       style={{ ...style, opacity }}
       data-handler-id={handlerId}
-      data-testid={`card-${item.id}`}
+      data-testid={`card-root`}
     >
-      {item.text}
+      <p data-testid={`card-title`}>{item.title}</p>
+      <p data-testid={`card-description`}>{item.description}</p>
+      <p data-testid={`card-group`}>{item.group}</p>
+      <button onClick={() => deleteCard(item)} data-testid={`card-delete`}>
+        delete
+      </button>
     </div>
   );
 };

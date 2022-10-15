@@ -1,30 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
+import { Item } from "./constants";
 
-export const ItemInput: React.FC = () => {
-  const [state, setState] = useState({
-    title: "",
-    description: "",
-    group: "",
-  });
+type InputItem = Omit<Item, "id">;
+type ItemInputProps = {
+  formValue: InputItem;
+  setFormValue: React.Dispatch<InputItem>;
+  setItem: React.Dispatch<React.SetStateAction<Item[]>>;
+};
 
+export const ItemInput: React.FC<ItemInputProps> = ({
+  formValue,
+  setFormValue,
+  setItem,
+}) => {
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
+    setFormValue({
+      ...formValue,
       title: e.target.value,
     });
   };
 
   const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
+    setFormValue({
+      ...formValue,
       description: e.target.value,
     });
   };
 
   const handleChangeState = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setState({
-      ...state,
+    setFormValue({
+      ...formValue,
       group: e.target.value,
+    });
+  };
+
+  const onClickSubmit = () => {
+    setItem((prevItem: Item[]) => {
+      prevItem.push({ id: Math.random(), ...formValue });
+      return [...prevItem];
+    });
+    setFormValue({
+      ...{
+        title: "",
+        description: "",
+        group: "todo",
+      },
     });
   };
 
@@ -34,6 +54,7 @@ export const ItemInput: React.FC = () => {
         <label>title</label>
         <input
           type="text"
+          value={formValue.title}
           onChange={handleChangeTitle}
           aria-label="title-input"
         />
@@ -42,6 +63,7 @@ export const ItemInput: React.FC = () => {
         <label>description</label>
         <input
           type="text"
+          value={formValue.description}
           onChange={handleChangeDescription}
           aria-label="description-input"
         />
@@ -49,7 +71,7 @@ export const ItemInput: React.FC = () => {
       <div>
         <label>state</label>
         <select
-          value={state.group}
+          value={formValue.group}
           onChange={handleChangeState}
           aria-label="state-input"
         >
@@ -59,11 +81,10 @@ export const ItemInput: React.FC = () => {
         </select>
       </div>
       <div>
-        <button type="button" onClick={() => console.log(state)}>
+        <button type="button" onClick={onClickSubmit}>
           submit
         </button>
       </div>
-      <span role={"cell"}>{state.title}</span>
     </form>
   );
 };

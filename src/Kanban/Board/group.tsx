@@ -15,6 +15,7 @@ export interface GroupProps {
   cards: Item[];
   moveCard: (dragIndex: number, hoverIndex: number) => void;
   moveGroup: (card: Item, toGroupType: string) => void;
+  deleteItem: (item: Item) => void;
   setCard: React.Dispatch<React.SetStateAction<Item[]>>;
   groupType: string;
 }
@@ -23,6 +24,7 @@ export const Group: React.FC<GroupProps> = ({
   cards,
   moveCard,
   moveGroup,
+  deleteItem,
   setCard,
   groupType,
 }) => {
@@ -34,9 +36,20 @@ export const Group: React.FC<GroupProps> = ({
     },
   });
 
-  const renderCard = useCallback((card: Item, index: number) => {
-    return <Card key={card.id} index={index} item={card} moveCard={moveCard} />;
-  }, []);
+  const renderCard = useCallback(
+    (card: Item, index: number) => {
+      return (
+        <Card
+          key={card.id}
+          index={index}
+          item={card}
+          moveCard={moveCard}
+          deleteCard={deleteItem}
+        />
+      );
+    },
+    [cards]
+  );
 
   return (
     <>

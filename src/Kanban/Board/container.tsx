@@ -1,18 +1,18 @@
 import React, { useCallback } from "react";
-import { Item } from "./constants";
+import { Item, GroupItem } from "./constants";
 import { Group } from "./group";
-import { useList } from "./useList";
 
 export type ContainerProps = {
-  initialItemList?: Item[];
+  groupedItem: GroupItem;
+  item: Item[];
+  setCards: React.Dispatch<React.SetStateAction<Item[]>>;
 };
 
 export const Container: React.FC<ContainerProps> = ({
-  initialItemList = [],
+  groupedItem,
+  item,
+  setCards,
 }) => {
-  //   const [cards, setCards] = useState(itemList);
-  const [groupedCards, cards, setCards] = useList(initialItemList);
-
   const moveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       // TODO
@@ -23,7 +23,7 @@ export const Container: React.FC<ContainerProps> = ({
       //     return newItems;
       //   });
     },
-    [cards]
+    [item]
   );
 
   const moveGroup = useCallback(
@@ -37,18 +37,29 @@ export const Container: React.FC<ContainerProps> = ({
         return [...newItems, newCard];
       });
     },
-    [cards]
+    [item]
+  );
+
+  const deleteItem = useCallback(
+    (item: Item) => {
+      setCards((prevItem: Item[]) => {
+        const newItem = prevItem.filter((value) => item.id !== value.id);
+        return [...newItem];
+      });
+    },
+    [item]
   );
 
   return (
     <>
-      {Object.keys(groupedCards).map((group) => (
+      {Object.keys(groupedItem).map((group) => (
         <Group
           key={group}
           groupType={group}
-          cards={groupedCards[group]}
+          cards={groupedItem[group]}
           moveCard={moveCard}
           moveGroup={moveGroup}
+          deleteItem={deleteItem}
           setCard={setCards}
         />
       ))}

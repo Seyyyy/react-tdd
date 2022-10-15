@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, cleanup, fireEvent } from "@testing-library/react";
 import React from "react";
-import { renderHook } from "@testing-library/react-hooks";
-import { useList } from "./Board/useList";
 import { Board } from "./Board";
 /*
 カンバンアプリ
@@ -23,7 +21,8 @@ const dragAndDrop = (Card: HTMLElement, Group: HTMLElement) => {
 const itemList = [
   {
     id: 1,
-    text: "test",
+    title: "title",
+    description: "test",
     group: "progress",
   },
 ];
@@ -32,46 +31,56 @@ describe("カンバンアプリのテスト", () => {
   test("タスクの配列は最後の要素の次に追加される", () => {
     const Root = render(<Board initialItemList={itemList} />);
     const GroupTodo = Root.getByTestId("group-todo");
-    const Card = Root.getByTestId("card-1");
+    const Card = Root.getByTestId("card-root");
     dragAndDrop(Card, GroupTodo);
-    Root.debug();
+    // Root.debug();
     // expect(result).toEqual();
   });
 
-  // test("タスクを配列に追加できる", () => {
-  //   const Root = render(<Board />);
-  //   const TitleInput = Root.getByRole("textbox", { name: "title-input" });
-  //   const DescriptionInput = Root.getByRole("textbox", {
-  //     name: "description-input",
-  //   });
-  //   const StateInput = Root.getByRole("combobox", { name: "state-input" });
-  //   const SubmitButton = Root.getByRole("button", { name: "submit" });
+  test("タスクを配列に追加できる", () => {
+    const Root = render(<Board />);
+    const TitleInput = Root.getByRole("textbox", { name: "title-input" });
+    const DescriptionInput = Root.getByRole("textbox", {
+      name: "description-input",
+    });
+    const StateInput = Root.getByRole("combobox", { name: "state-input" });
+    const SubmitButton = Root.getByRole("button", { name: "submit" });
 
-  //   fireEvent.change(TitleInput, { target: { value: "title" } });
-  //   fireEvent.change(DescriptionInput, { target: { value: "description" } });
-  //   fireEvent.change(StateInput, { target: { value: "todo" } });
-  //   fireEvent.click(SubmitButton);
+    fireEvent.change(TitleInput, { target: { value: "title" } });
+    fireEvent.change(DescriptionInput, { target: { value: "description" } });
+    fireEvent.change(StateInput, { target: { value: "todo" } });
+    fireEvent.click(SubmitButton);
 
-  //   const result = Root.getByRole("cell").textContent;
-  //   expect(result).toBe("title");
+    // タスクが追加されると配列の最後に挿入される
+    const result =
+      Root.getAllByTestId("card-root")[
+        Root.getAllByTestId("card-root").length - 1
+      ];
 
-  // expect(result).toEqual([
-  //   {
-  //     id: 1,
-  //     text: "test",
-  //     group: "progress",
-  //   },
-  //   {
-  //     id: 2,
-  //     text: "test",
-  //     group: "todo",
-  //   },
-  // ]);
-  // });
+    expect(result.firstChild?.textContent).toBe("title");
+    expect(result.childNodes[1].textContent).toBe("description");
+    expect(result.childNodes[2].textContent).toBe("todo");
+  });
 
-  test("タスクを配列から削除できる", () => {});
+  test("タスクを配列から削除できる", () => {
+    const Root = render(<Board initialItemList={itemList} />);
+    const DeleteButton = Root.getByTestId("card-delete");
 
-  test("タスクの内容を変更できる(Todo progress done)", () => {});
+    fireEvent.click(DeleteButton);
+
+    const Card = Root.queryByTestId("card-root");
+    expect(Card).toBeFalsy();
+  });
+
+  test("タスクの内容を変更できる(Todo progress done)", () => {
+    const Root = render(<Board initialItemList={itemList} />);
+    const GroupTodo = Root.getByTestId("group-todo");
+    const Card = Root.getByTestId("card-root");
+    dragAndDrop(Card, GroupTodo);
+
+    const result = Root.getByTestId("card-root").childNodes[2].textContent;
+    expect(result).toBe("todo");
+  });
 });
 
 /*
