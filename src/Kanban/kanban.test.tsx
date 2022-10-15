@@ -78,18 +78,6 @@ describe("カンバンアプリのテスト", () => {
       const result = Root.getByTestId("card-root").childNodes[2].textContent;
       expect(result).toBe("test");
     });
-
-    test("タスクの配列は最後の要素の次に追加される", () => {
-      const Root = render(
-        <Board initialItemList={itemList} groupType={["todo", "progress"]} />
-      );
-      const GroupTodo = Root.getByTestId("group-todo");
-      const Card = Root.getByTestId("card-root");
-      dragAndDrop(Card, GroupTodo);
-
-      const result = Root.getByTestId("card-root").childNodes[2].textContent;
-      expect(result).toBe("todo");
-    });
   });
 
   describe("Delete", () => {
