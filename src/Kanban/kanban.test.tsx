@@ -28,69 +28,81 @@ const itemList = [
   },
 ];
 describe("カンバンアプリのテスト", () => {
-  test("タスクの配列は最後の要素の次に追加される", () => {
-    const Root = render(
-      <Board initialItemList={itemList} groupType={["todo", "progress"]} />
-    );
-    const GroupTodo = Root.getByTestId("group-todo");
-    const Card = Root.getByTestId("card-root");
-    dragAndDrop(Card, GroupTodo);
-  });
+  describe("Create", () => {
+    test("タスクを配列に追加できる", () => {
+      const Root = render(<Board groupType={["todo", "progress"]} />);
+      const TitleInput = Root.getByRole("textbox", { name: "title-input" });
+      const DescriptionInput = Root.getByRole("textbox", {
+        name: "description-input",
+      });
+      const StateInput = Root.getByRole("combobox", { name: "state-input" });
+      const SubmitButton = Root.getByRole("button", { name: "submit" });
 
-  test("タスクを配列に追加できる", () => {
-    const Root = render(<Board groupType={["todo", "progress"]} />);
-    const TitleInput = Root.getByRole("textbox", { name: "title-input" });
-    const DescriptionInput = Root.getByRole("textbox", {
-      name: "description-input",
+      fireEvent.change(TitleInput, { target: { value: "title" } });
+      fireEvent.change(DescriptionInput, { target: { value: "description" } });
+      fireEvent.change(StateInput, { target: { value: "todo" } });
+      fireEvent.click(SubmitButton);
+
+      // タスクが追加されると配列の最後に挿入される
+      const result =
+        Root.getAllByTestId("card-root")[
+          Root.getAllByTestId("card-root").length - 1
+        ];
+
+      expect(result.firstChild?.textContent).toBe("title");
+      expect(result.childNodes[1].textContent).toBe("description");
+      expect(result.childNodes[2].textContent).toBe("todo");
     });
-    const StateInput = Root.getByRole("combobox", { name: "state-input" });
-    const SubmitButton = Root.getByRole("button", { name: "submit" });
+  });
 
-    fireEvent.change(TitleInput, { target: { value: "title" } });
-    fireEvent.change(DescriptionInput, { target: { value: "description" } });
-    fireEvent.change(StateInput, { target: { value: "todo" } });
-    fireEvent.click(SubmitButton);
+  // Readは他のテスト過程で可能
+  // describe("Read", () => {});
 
-    // タスクが追加されると配列の最後に挿入される
-    const result =
-      Root.getAllByTestId("card-root")[
-        Root.getAllByTestId("card-root").length - 1
+  describe("Update", () => {
+    test("タスクの状態を変更できる(N個の状態)", () => {
+      const itemList = [
+        {
+          id: 1,
+          title: "title",
+          description: "test",
+          group: "todo",
+        },
       ];
+      const Root = render(
+        <Board initialItemList={itemList} groupType={["todo", "test"]} />
+      );
+      const GroupTodo = Root.getByTestId("group-test");
+      const Card = Root.getByTestId("card-root");
+      dragAndDrop(Card, GroupTodo);
 
-    expect(result.firstChild?.textContent).toBe("title");
-    expect(result.childNodes[1].textContent).toBe("description");
-    expect(result.childNodes[2].textContent).toBe("todo");
+      const result = Root.getByTestId("card-root").childNodes[2].textContent;
+      expect(result).toBe("test");
+    });
+
+    test("タスクの配列は最後の要素の次に追加される", () => {
+      const Root = render(
+        <Board initialItemList={itemList} groupType={["todo", "progress"]} />
+      );
+      const GroupTodo = Root.getByTestId("group-todo");
+      const Card = Root.getByTestId("card-root");
+      dragAndDrop(Card, GroupTodo);
+
+      const result = Root.getByTestId("card-root").childNodes[2].textContent;
+      expect(result).toBe("todo");
+    });
   });
 
-  test("タスクを配列から削除できる", () => {
-    const Root = render(
-      <Board initialItemList={itemList} groupType={["todo", "progress"]} />
-    );
-    const DeleteButton = Root.getByTestId("card-delete");
+  describe("Delete", () => {
+    test("タスクを配列から削除できる", () => {
+      const Root = render(
+        <Board initialItemList={itemList} groupType={["todo", "progress"]} />
+      );
+      const DeleteButton = Root.getByTestId("card-delete");
 
-    fireEvent.click(DeleteButton);
+      fireEvent.click(DeleteButton);
 
-    const Card = Root.queryByTestId("card-root");
-    expect(Card).toBeFalsy();
-  });
-
-  test("タスクの状態を変更できる(N個の状態)", () => {
-    const itemList = [
-      {
-        id: 1,
-        title: "title",
-        description: "test",
-        group: "todo",
-      },
-    ];
-    const Root = render(
-      <Board initialItemList={itemList} groupType={["todo", "test"]} />
-    );
-    const GroupTodo = Root.getByTestId("group-test");
-    const Card = Root.getByTestId("card-root");
-    dragAndDrop(Card, GroupTodo);
-
-    const result = Root.getByTestId("card-root").childNodes[2].textContent;
-    expect(result).toBe("test");
+      const Card = Root.queryByTestId("card-root");
+      expect(Card).toBeFalsy();
+    });
   });
 });
