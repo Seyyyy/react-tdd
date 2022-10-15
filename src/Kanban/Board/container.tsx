@@ -60,7 +60,6 @@ export const Container: React.FC<ContainerProps> = ({
           moveCard={moveCard}
           moveGroup={moveGroup}
           deleteItem={deleteItem}
-          setCard={setCards}
         />
       ))}
     </>

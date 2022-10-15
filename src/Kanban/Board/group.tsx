@@ -16,7 +16,6 @@ export interface GroupProps {
   moveCard: (dragIndex: number, hoverIndex: number) => void;
   moveGroup: (card: Item, toGroupType: string) => void;
   deleteItem: (item: Item) => void;
-  setCard: React.Dispatch<React.SetStateAction<Item[]>>;
   groupType: string;
 }
 
@@ -25,7 +24,6 @@ export const Group: React.FC<GroupProps> = ({
   moveCard,
   moveGroup,
   deleteItem,
-  setCard,
   groupType,
 }) => {
   const [, ref] = useDrop({

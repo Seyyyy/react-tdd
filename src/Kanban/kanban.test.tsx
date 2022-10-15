@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import { Board } from "./Board";
 /*
@@ -28,7 +28,6 @@ const itemList = [
   },
 ];
 describe("カンバンアプリのテスト", () => {
-  // test("Todo, In Progress, Doneの3状態に変更できる", () => {});
   test("タスクの配列は最後の要素の次に追加される", () => {
     const Root = render(
       <Board initialItemList={itemList} groupType={["todo", "progress"]} />
@@ -75,7 +74,7 @@ describe("カンバンアプリのテスト", () => {
     expect(Card).toBeFalsy();
   });
 
-  test("タスクの内容を変更できる(N個の状態)", () => {
+  test("タスクの状態を変更できる(N個の状態)", () => {
     const itemList = [
       {
         id: 1,
@@ -95,23 +94,3 @@ describe("カンバンアプリのテスト", () => {
     expect(result).toBe("test");
   });
 });
-
-/*
-カードはDraggableである
-  ホバーでdndできる
-    グループ内でdndできる
-      グループ内の場合はソート
-    グループ外へdndできる
-      グループ外の場合は挿入
-グループはDraggableでない
-
-タイトルごとのオブジェクトを生成できる
-dragIndexとhoverIndexとgroup名を引数にdndでソートができる
-dragIndexとhoverIndexとgroup名を引数にdndでグループ変更ができる
-
-Nグループある
-*/
-
-/*
-ホバーしたら対象のデータを削除してグループに移す
-*/

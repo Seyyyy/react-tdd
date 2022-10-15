@@ -1,10 +1,22 @@
 import React, { useMemo, useState } from "react";
 import { DndProvider } from "react-dnd";
-import { Item } from "./constants";
+import { Item, GroupItem } from "./constants";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Container } from "./container";
 import { ItemInput } from "./itemInput";
-import { useList, generateGroupedList } from "./useList";
+
+export const generateGroupedList = (
+  GroupType: string[],
+  item?: Item[]
+): GroupItem => {
+  let groupedList: GroupItem = {};
+  if (!item) return groupedList;
+
+  GroupType.map((group) => {
+    groupedList[group] = item.filter((item) => item.group === group);
+  });
+  return groupedList;
+};
 
 export type BoardProps = {
   initialItemList?: Item[];
@@ -15,7 +27,7 @@ export const Board: React.FC<BoardProps> = ({
   initialItemList = [],
   groupType,
 }) => {
-  const [item, setItem] = useList(initialItemList);
+  const [item, setItem] = useState<Item[]>(initialItemList);
 
   const [formValue, setFormValue] = useState({
     title: "",

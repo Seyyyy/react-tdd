@@ -19,29 +19,3 @@ export interface GroupItem {
 }
 
 export const GroupType = ["todo", "progress", "done"];
-
-// export const swapCard = (
-//   dragIndex: number,
-//   hoverIndex: number,
-//   groupType: string,
-//   prevCards: GroupItem
-// ) => {
-//   const item = prevCards[groupType][dragIndex];
-//   const newItems = prevCards[groupType].filter((_, idx) => idx !== dragIndex);
-//   newItems.splice(hoverIndex, 0, { ...item });
-//   prevCards[groupType] = newItems;
-//   return prevCards;
-// };
-
-// export const swapGroup = (
-//   dragIndex: number,
-//   hoverIndex: number,
-//   groupType: string,
-//   prevCards: GroupItem
-// ) => {
-//   const item = prevCards[groupType][dragIndex];
-//   const newItems = prevCards[groupType].filter((_, idx) => idx !== dragIndex);
-//   newItems.splice(hoverIndex, 0, { ...item });
-//   prevCards[groupType] = newItems;
-//   return prevCards;
-// };
