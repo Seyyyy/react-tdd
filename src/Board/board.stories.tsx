@@ -11,20 +11,20 @@ export default {
 const initialItemList = [
   {
     id: 1,
-    title: "title",
-    description: "desc",
+    title: "title1",
+    description: "desc1",
     group: "done",
   },
   {
     id: 2,
-    title: "title",
-    description: "desc",
+    title: "title2",
+    description: "desc2",
     group: "progress",
   },
   {
     id: 3,
-    title: "title",
-    description: "desc",
+    title: "title3",
+    description: "desc3",
     group: "todo",
   },
 ];
