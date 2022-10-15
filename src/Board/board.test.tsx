@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, fireEvent } from "@testing-library/react";
 import React from "react";
-import { Board } from "./Board";
+import { Board } from ".";
 /*
 カンバンアプリ
 Todo, In Progress, Doneの3状態があり、それぞれの状態に変更ができる。
