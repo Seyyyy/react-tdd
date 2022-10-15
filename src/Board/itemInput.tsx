@@ -45,7 +45,7 @@ export const ItemInput: React.FC<ItemInputProps> = ({
       ...{
         title: "",
         description: "",
-        group: "todo",
+        group: groupType[0],
       },
     });
   };
